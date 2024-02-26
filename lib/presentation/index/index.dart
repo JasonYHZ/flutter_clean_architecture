@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/presentation/utils/extension.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../activity/index.dart';
-import '../providers.dart';
+import '../app.dart';
+
 
 class IndexView extends HookConsumerWidget {
   const IndexView({super.key});
@@ -74,28 +74,11 @@ class IndexView extends HookConsumerWidget {
           ),
         ],
       ),
-      body: ListView(
-        children: [
-          Center(
-              child: Text(
+      body: Center(
+          child: Text(
             context.loc.helloWorld,
             style: Theme.of(context).textTheme.headlineLarge,
           )),
-          const SizedBox(height: 20),
-          Center(
-            child: ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const ActivityView(),
-                  ),
-                );
-              },
-              child: const Text('go to activity'),
-            ),
-          ),
-        ],
-      ),
     );
   }
 }

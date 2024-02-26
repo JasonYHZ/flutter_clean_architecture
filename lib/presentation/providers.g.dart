@@ -6,28 +6,13 @@ part of 'providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$appStateNotificationHash() =>
-    r'f4f76ae1c30eaf945df338dd328e5ba02f27b9e2';
-
-/// See also [AppStateNotification].
-@ProviderFor(AppStateNotification)
-final appStateNotificationProvider =
-    AutoDisposeNotifierProvider<AppStateNotification, AppState>.internal(
-  AppStateNotification.new,
-  name: r'appStateNotificationProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$appStateNotificationHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef _$AppStateNotification = AutoDisposeNotifier<AppState>;
 String _$activityRepositoryNotifierHash() =>
     r'cd148b42d06958f5d25f728e466fcbccd7be852b';
 
 /// Presentation
+/// -----------------------------------------------------------------------------
 /// Domain
+/// -----------------------------------------------------------------------------
 ///
 /// Copied from [ActivityRepositoryNotifier].
 @ProviderFor(ActivityRepositoryNotifier)
@@ -43,10 +28,31 @@ final activityRepositoryNotifierProvider = AutoDisposeNotifierProvider<
 );
 
 typedef _$ActivityRepositoryNotifier = AutoDisposeNotifier<ActivityRepository>;
+String _$appRepositoryNotifierHash() =>
+    r'7266fad1c080eee51295f8107105aed16b8513b4';
+
+/// See also [AppRepositoryNotifier].
+@ProviderFor(AppRepositoryNotifier)
+final appRepositoryNotifierProvider =
+    AutoDisposeNotifierProvider<AppRepositoryNotifier, AppRepository>.internal(
+  AppRepositoryNotifier.new,
+  name: r'appRepositoryNotifierProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$appRepositoryNotifierHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$AppRepositoryNotifier = AutoDisposeNotifier<AppRepository>;
 String _$getActivityNotifierHash() =>
     r'405e6e0fad8f33a7b2bdd5cc5cb83f670003a0d5';
 
-/// See also [GetActivityNotifier].
+/// Repository
+/// -----------------------------------------------------------------------------
+/// UseCase
+///
+/// Copied from [GetActivityNotifier].
 @ProviderFor(GetActivityNotifier)
 final getActivityNotifierProvider =
     AutoDisposeNotifierProvider<GetActivityNotifier, GetActivity>.internal(
@@ -60,6 +66,23 @@ final getActivityNotifierProvider =
 );
 
 typedef _$GetActivityNotifier = AutoDisposeNotifier<GetActivity>;
+String _$appUseCaseNotifierHash() =>
+    r'8f73eb813c3c0d60ac5c0310544cfeb4c21fbf20';
+
+/// See also [AppUseCaseNotifier].
+@ProviderFor(AppUseCaseNotifier)
+final appUseCaseNotifierProvider =
+    AutoDisposeNotifierProvider<AppUseCaseNotifier, AppCase>.internal(
+  AppUseCaseNotifier.new,
+  name: r'appUseCaseNotifierProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$appUseCaseNotifierHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$AppUseCaseNotifier = AutoDisposeNotifier<AppCase>;
 String _$apiNotifierHash() => r'185e93c17888cce2a51eb9187229452d0cea25ff';
 
 /// Data

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/presentation/index/index.dart';
+import 'package:flutter_clean_architecture/presentation/providers.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import 'providers.dart';
 import 'theme.dart';
+
+part 'app.g.dart';
 
 class AppState {
   final Locale locale;
@@ -40,5 +43,26 @@ class AppRoot extends HookConsumerWidget {
         theme: appStateNotification.themeData.toThemeData(),
         darkTheme: appStateNotification.themeData.toThemeDataDark(),
         home: const IndexView());
+  }
+}
+
+@riverpod
+class AppStateNotification extends _$AppStateNotification {
+  @override
+  AppState build() {
+    return AppState(
+        locale: ref.read(appUseCaseNotifierProvider).loadLocale(),
+        themeMode: ref.read(appUseCaseNotifierProvider).loadTheme(),
+        themeData: const CustomTheme());
+  }
+
+  void setThemeMode(ThemeMode themeMode) async {
+    await ref.read(appUseCaseNotifierProvider).saveTheme(themeMode);
+    state = state.copyWith(themeMode: themeMode);
+  }
+
+  void setLocale(Locale locale) async {
+    await ref.read(appUseCaseNotifierProvider).saveLocale(locale);
+    state = state.copyWith(locale: locale);
   }
 }
