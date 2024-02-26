@@ -4,6 +4,7 @@ import 'package:flutter_clean_architecture/data/source/database/database.dart';
 import 'package:flutter_clean_architecture/data/source/database/database_impl.dart';
 import 'package:flutter_clean_architecture/data/source/local/local_storage.dart';
 import 'package:flutter_clean_architecture/data/source/network/api.dart';
+import 'package:flutter_clean_architecture/data/source/network/websocket.dart';
 import 'package:flutter_clean_architecture/domain/repository/activitys.dart';
 import 'package:flutter_clean_architecture/domain/usecase/get_activity.dart';
 import 'package:flutter_clean_architecture/main.dart';
@@ -74,5 +75,13 @@ class DatabaseNotifier extends _$DatabaseNotifier {
   Database build() {
     return DatabaseImpl(
         dbName: 'database.db', inMemory: false, logStatements: false);
+  }
+}
+
+@riverpod
+class WebsocketNotifier extends _$WebsocketNotifier {
+  @override
+  Websocket build() {
+    return WebsocketImpl();
   }
 }

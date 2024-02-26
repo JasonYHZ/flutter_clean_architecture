@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_clean_architecture/presentation/utils/extension.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../activity/index.dart';
 import '../providers.dart';
