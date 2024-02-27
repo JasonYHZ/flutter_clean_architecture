@@ -1,5 +1,7 @@
 import 'package:flutter_clean_architecture/data/repository/activity_impl.dart';
 import 'package:flutter_clean_architecture/data/repository/app_impl.dart';
+import 'package:flutter_clean_architecture/data/repository/authentication_impl.dart';
+import 'package:flutter_clean_architecture/data/repository/user_impl.dart';
 import 'package:flutter_clean_architecture/data/source/database/database.dart';
 import 'package:flutter_clean_architecture/data/source/database/database_impl.dart';
 import 'package:flutter_clean_architecture/data/source/local/local_storage.dart';
@@ -7,8 +9,12 @@ import 'package:flutter_clean_architecture/data/source/network/api.dart';
 import 'package:flutter_clean_architecture/data/source/network/websocket.dart';
 import 'package:flutter_clean_architecture/domain/repository/activitys.dart';
 import 'package:flutter_clean_architecture/domain/repository/app.dart';
+import 'package:flutter_clean_architecture/domain/repository/authentication.dart';
+import 'package:flutter_clean_architecture/domain/repository/user.dart';
 import 'package:flutter_clean_architecture/domain/usecase/app_case.dart';
+import 'package:flutter_clean_architecture/domain/usecase/auth_case.dart';
 import 'package:flutter_clean_architecture/domain/usecase/get_activity.dart';
+import 'package:flutter_clean_architecture/domain/usecase/user_case.dart';
 import 'package:flutter_clean_architecture/main.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -35,6 +41,28 @@ class AppRepositoryNotifier extends _$AppRepositoryNotifier {
       AppRepositoryImpl(localStorage: ref.read(localStorageNotifierProvider));
 }
 
+@riverpod
+class UserRepositoryNotifier extends _$UserRepositoryNotifier {
+  @override
+  UserRepository build() {
+    return UserRepositoryImpl(
+      api: ref.read(apiNotifierProvider),
+      localStorage: ref.read(localStorageNotifierProvider),
+    );
+  }
+}
+
+@riverpod
+class AuthenticationNotifier extends _$AuthenticationNotifier {
+  @override
+  AuthenticationRepository build() {
+    return AuthenticationRepositoryImpl(
+      api: ref.read(apiNotifierProvider),
+      localStorage: ref.read(localStorageNotifierProvider),
+    );
+  }
+}
+
 /// Repository
 /// -----------------------------------------------------------------------------
 /// UseCase
@@ -52,12 +80,28 @@ class AppUseCaseNotifier extends _$AppUseCaseNotifier {
   AppCase build() => AppCase(ref.read(appRepositoryNotifierProvider));
 }
 
+@riverpod
+class UserUseCaseNotifier extends _$UserUseCaseNotifier {
+  @override
+  UserCase build() {
+    return UserCase(ref.read(userRepositoryNotifierProvider));
+  }
+}
+
+@riverpod
+class AuthenticationCaseNotifier extends _$AuthenticationCaseNotifier {
+  @override
+  AuthenticationCase build() {
+    return AuthenticationCase(ref.read(authenticationNotifierProvider));
+  }
+}
+
 /// Data
 
 @riverpod
 class ApiNotifier extends _$ApiNotifier {
   @override
-  Api build() => ApiImpl();
+  Api build() => ApiImpl(localStorage: ref.read(localStorageNotifierProvider));
 }
 
 @riverpod

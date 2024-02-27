@@ -1,9 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_clean_architecture/presentation/providers.dart';
 import 'package:flutter_clean_architecture/presentation/utils/extension.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../app.dart';
-
+import '../authenticate/index.dart';
 
 class IndexView extends HookConsumerWidget {
   const IndexView({super.key});
@@ -14,7 +16,45 @@ class IndexView extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(' Clean Architecture'),
+        title: const Text('Clean Architecture'),
+        leadingWidth: 38,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 8.0),
+          child: Ink(
+            decoration: const BoxDecoration(
+              color: Colors.blue,
+              shape: BoxShape.circle,
+            ),
+            child: InkWell(
+              onTap: appStateNotification.value?.user == null
+                  ? () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return const AuthenticateView();
+                          },
+                        ),
+                      );
+                    }
+                  : null,
+              customBorder: const CircleBorder(),
+              child: CircleAvatar(
+                backgroundColor: Colors.transparent,
+                radius: 15,
+                backgroundImage: appStateNotification.value!.user == null
+                    ? null
+                    : CachedNetworkImageProvider(
+                        appStateNotification.value!.user!.avatar),
+                child: appStateNotification.value!.user == null
+                    ? const Icon(
+                        Icons.person,
+                        color: Colors.white,
+                      )
+                    : null,
+              ),
+            ),
+          ),
+        ),
         actions: [
           PopupMenuButton<ThemeMode>(
             offset: const Offset(0, 20),
@@ -22,7 +62,7 @@ class IndexView extends HookConsumerWidget {
                 .read(appStateNotificationProvider.notifier)
                 .setThemeMode(value),
             child: Builder(builder: (_) {
-              switch (appStateNotification.themeMode) {
+              switch (appStateNotification.value!.themeMode) {
                 case ThemeMode.system:
                   return const Icon(Icons.brightness_auto);
                 case ThemeMode.light:
@@ -53,7 +93,7 @@ class IndexView extends HookConsumerWidget {
                 .read(appStateNotificationProvider.notifier)
                 .setLocale(value),
             child: Builder(builder: (_) {
-              switch (appStateNotification.locale.languageCode) {
+              switch (appStateNotification.value!.locale.languageCode) {
                 case 'zh':
                   return const Text('简体中文');
                 case 'en':
@@ -72,13 +112,35 @@ class IndexView extends HookConsumerWidget {
               ),
             ],
           ),
+          const SizedBox(width: 10),
         ],
       ),
-      body: Center(
-          child: Text(
-            context.loc.helloWorld,
-            style: Theme.of(context).textTheme.headlineLarge,
-          )),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          if (appStateNotification.value!.user != null)
+            CircleAvatar(
+              radius: 30,
+              backgroundColor: Colors.blue,
+              backgroundImage: CachedNetworkImageProvider(
+                  appStateNotification.value!.user!.avatar),
+            ),
+          Center(
+            child: Text(
+              context.loc.helloWorld,
+              style: Theme.of(context).textTheme.headlineLarge,
+            ),
+          ),
+          if (appStateNotification.value!.user != null)
+            FilledButton(
+                onPressed: () async {
+                  ref.read(userUseCaseNotifierProvider).deleteUser();
+                  ref.watch(appStateNotificationProvider.notifier).setUser(null);
+                },
+                child: const Text('Logout'))
+        ],
+      ),
     );
   }
 }

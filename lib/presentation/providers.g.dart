@@ -45,6 +45,41 @@ final appRepositoryNotifierProvider =
 );
 
 typedef _$AppRepositoryNotifier = AutoDisposeNotifier<AppRepository>;
+String _$userRepositoryNotifierHash() =>
+    r'ce0e389c6521c99bf8e8da309cd2ee08a2465783';
+
+/// See also [UserRepositoryNotifier].
+@ProviderFor(UserRepositoryNotifier)
+final userRepositoryNotifierProvider = AutoDisposeNotifierProvider<
+    UserRepositoryNotifier, UserRepository>.internal(
+  UserRepositoryNotifier.new,
+  name: r'userRepositoryNotifierProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$userRepositoryNotifierHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$UserRepositoryNotifier = AutoDisposeNotifier<UserRepository>;
+String _$authenticationNotifierHash() =>
+    r'5f881d1793417acf719ce05858164d86874ccbea';
+
+/// See also [AuthenticationNotifier].
+@ProviderFor(AuthenticationNotifier)
+final authenticationNotifierProvider = AutoDisposeNotifierProvider<
+    AuthenticationNotifier, AuthenticationRepository>.internal(
+  AuthenticationNotifier.new,
+  name: r'authenticationNotifierProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$authenticationNotifierHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$AuthenticationNotifier
+    = AutoDisposeNotifier<AuthenticationRepository>;
 String _$getActivityNotifierHash() =>
     r'405e6e0fad8f33a7b2bdd5cc5cb83f670003a0d5';
 
@@ -83,7 +118,41 @@ final appUseCaseNotifierProvider =
 );
 
 typedef _$AppUseCaseNotifier = AutoDisposeNotifier<AppCase>;
-String _$apiNotifierHash() => r'185e93c17888cce2a51eb9187229452d0cea25ff';
+String _$userUseCaseNotifierHash() =>
+    r'a5f39efb06cae24088909e03e104570fa2594e24';
+
+/// See also [UserUseCaseNotifier].
+@ProviderFor(UserUseCaseNotifier)
+final userUseCaseNotifierProvider =
+    AutoDisposeNotifierProvider<UserUseCaseNotifier, UserCase>.internal(
+  UserUseCaseNotifier.new,
+  name: r'userUseCaseNotifierProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$userUseCaseNotifierHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$UserUseCaseNotifier = AutoDisposeNotifier<UserCase>;
+String _$authenticationCaseNotifierHash() =>
+    r'd94997f3871a6c2312e94d588653b13d1a0a5f54';
+
+/// See also [AuthenticationCaseNotifier].
+@ProviderFor(AuthenticationCaseNotifier)
+final authenticationCaseNotifierProvider = AutoDisposeNotifierProvider<
+    AuthenticationCaseNotifier, AuthenticationCase>.internal(
+  AuthenticationCaseNotifier.new,
+  name: r'authenticationCaseNotifierProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$authenticationCaseNotifierHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$AuthenticationCaseNotifier = AutoDisposeNotifier<AuthenticationCase>;
+String _$apiNotifierHash() => r'89dfc09cc9ef2391ef2f9cc4c60d0f85dd78e2f7';
 
 /// Data
 ///

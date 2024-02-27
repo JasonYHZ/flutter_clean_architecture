@@ -7,12 +7,12 @@ part of 'app.dart';
 // **************************************************************************
 
 String _$appStateNotificationHash() =>
-    r'5334c0ddd56fd959cabc6d14ac2102636af37118';
+    r'c1de9d8a61e90aeb824a7fe75749ad2937d76575';
 
 /// See also [AppStateNotification].
 @ProviderFor(AppStateNotification)
 final appStateNotificationProvider =
-    AutoDisposeNotifierProvider<AppStateNotification, AppState>.internal(
+    AutoDisposeAsyncNotifierProvider<AppStateNotification, AppState>.internal(
   AppStateNotification.new,
   name: r'appStateNotificationProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -22,6 +22,6 @@ final appStateNotificationProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$AppStateNotification = AutoDisposeNotifier<AppState>;
+typedef _$AppStateNotification = AutoDisposeAsyncNotifier<AppState>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

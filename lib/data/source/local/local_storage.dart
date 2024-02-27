@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_clean_architecture/data/entity/user_dto.dart';
 import 'package:flutter_clean_architecture/domain/model/activity.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,6 +10,7 @@ const cachedActivityKey = 'CACHED_ACTIVITY';
 const cachedThemeKey = 'CACHED_THEME';
 const cachedLocaleKey = 'CACHED_LOCALE';
 const cachedToken = 'CACHED_TOKEN';
+const cacheUserInfo = 'CACHED_USERINFO';
 
 abstract class LocalStorage {
   Future<bool> saveActivity(
@@ -25,6 +27,16 @@ abstract class LocalStorage {
   Future<bool> saveTheme(ThemeMode themeMode);
 
   Future<bool> safeSaveToken(String token);
+
+  Future<bool> deleteToken();
+
+  Future<bool> deleteUser();
+
+  Future<bool> saveUser(UserDto response);
+
+  String? loadUser();
+
+  Future<String?> safeLoadToken();
 }
 
 class LocalStorageImpl implements LocalStorage {
@@ -95,5 +107,30 @@ class LocalStorageImpl implements LocalStorage {
   Future<bool> safeSaveToken(String token) async {
     await _secureStorage.write(key: cachedToken, value: token);
     return true;
+  }
+
+  @override
+  Future<bool> deleteToken() async {
+    await _secureStorage.delete(key: cachedToken);
+    return true;
+  }
+
+  @override
+  Future<bool> deleteUser() async {
+    return await _sharedPreferences.remove(cacheUserInfo);
+  }
+
+  @override
+  Future<bool> saveUser(UserDto response) async {
+    return await _sharedPreferences.setString(
+        cacheUserInfo, jsonEncode(response));
+  }
+
+  @override
+  String? loadUser() => _sharedPreferences.getString(cacheUserInfo);
+
+  @override
+  Future<String?> safeLoadToken() async {
+    return await _secureStorage.read(key: cachedToken);
   }
 }
