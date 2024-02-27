@@ -16,7 +16,10 @@ class UserRepositoryImpl extends UserRepository {
 
   @override
   Future<bool> deleteUser() async {
-    return await _localStorage.deleteUser();
+    await _localStorage.deleteToken();
+    await _localStorage.deleteUser();
+
+    return true;
   }
 
   @override
