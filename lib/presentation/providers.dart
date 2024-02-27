@@ -64,7 +64,10 @@ class ApiNotifier extends _$ApiNotifier {
 class LocalStorageNotifier extends _$LocalStorageNotifier {
   @override
   LocalStorage build() {
-    return LocalStorageImpl(sharedPreferences: sharedPref);
+    return LocalStorageImpl(
+      sharedPreferences: sharedPref,
+      secureStorage: secureStorage,
+    );
   }
 }
 

@@ -101,7 +101,7 @@ final apiNotifierProvider =
 
 typedef _$ApiNotifier = AutoDisposeNotifier<Api>;
 String _$localStorageNotifierHash() =>
-    r'd372b85dbd7e78064434cbb8ad0ae9be2a895241';
+    r'f9e08fbb7e72b9cc58b50478bd194a73cc5f154e';
 
 /// See also [LocalStorageNotifier].
 @ProviderFor(LocalStorageNotifier)

@@ -1,13 +1,14 @@
 import 'dart:convert';
-import 'dart:ui';
 
-import 'package:flutter/src/material/app.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/domain/model/activity.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 const cachedActivityKey = 'CACHED_ACTIVITY';
 const cachedThemeKey = 'CACHED_THEME';
 const cachedLocaleKey = 'CACHED_LOCALE';
+const cachedToken = 'CACHED_TOKEN';
 
 abstract class LocalStorage {
   Future<bool> saveActivity(
@@ -22,13 +23,19 @@ abstract class LocalStorage {
   Future<bool> saveLocale(Locale locale);
 
   Future<bool> saveTheme(ThemeMode themeMode);
+
+  Future<bool> safeSaveToken(String token);
 }
 
 class LocalStorageImpl implements LocalStorage {
   final SharedPreferences _sharedPreferences;
+  final FlutterSecureStorage _secureStorage;
 
-  LocalStorageImpl({required SharedPreferences sharedPreferences})
-      : _sharedPreferences = sharedPreferences;
+  LocalStorageImpl({
+    required SharedPreferences sharedPreferences,
+    required FlutterSecureStorage secureStorage,
+  })  : _sharedPreferences = sharedPreferences,
+        _secureStorage = secureStorage;
 
   @override
   String? loadActivity(String cacheKey) {
@@ -82,5 +89,11 @@ class LocalStorageImpl implements LocalStorage {
       case ThemeMode.system:
         return _sharedPreferences.setString(cachedThemeKey, 'system');
     }
+  }
+
+  @override
+  Future<bool> safeSaveToken(String token) async {
+    await _secureStorage.write(key: cachedToken, value: token);
+    return true;
   }
 }
