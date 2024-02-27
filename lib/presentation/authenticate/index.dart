@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_clean_architecture/presentation/app.dart';
-import 'package:flutter_clean_architecture/presentation/providers.dart';
+import 'package:flutter_clean_architecture/presentation/authenticate/model.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -11,8 +10,8 @@ class AuthenticateView extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final account = useState<String>("");
     final password = useState<String>("");
-    final logging = useState<bool>(false);
     final formKey = GlobalKey<FormState>();
+    final model = ref.watch(authenticateViewModelProvider);
 
     return Scaffold(
       appBar: AppBar(title: const Text('Authenticated')),
@@ -56,41 +55,25 @@ class AuthenticateView extends HookConsumerWidget {
                   SizedBox(
                     width: double.infinity,
                     child: FilledButton.icon(
-                      onPressed: logging.value
+                      onPressed: model.logging
                           ? null
                           : () async {
-                              try {
-                                logging.value = true;
-                                if (formKey.currentState?.validate() ?? false) {
-                                  formKey.currentState!.save();
+                              if (formKey.currentState?.validate() ?? false) {
+                                formKey.currentState!.save();
 
-                                  final loginStatus = await ref
-                                      .read(authenticationCaseNotifierProvider)
-                                      .login(account.value, password.value);
+                                await ref
+                                    .read(
+                                        authenticateViewModelProvider.notifier)
+                                    .signInWithEmailAndPassword(
+                                        account.value, password.value);
 
-                                  if (loginStatus) {
-                                    final user = await ref
-                                        .read(userUseCaseNotifierProvider)
-                                        .loadUser();
-
-                                    if (user != null) {
-                                      ref
-                                          .read(appStateNotificationProvider
-                                              .notifier)
-                                          .setUser(user);
-                                    }
-
-                                    if (context.mounted) {
-                                      Navigator.of(context).pop();
-                                    }
-                                  }
+                                if (context.mounted) {
+                                  Navigator.of(context).pop();
                                 }
-                              } finally {
-                                logging.value = false;
                               }
                             },
                       icon: const Text('Login'),
-                      label: logging.value
+                      label: model.logging
                           ? const CircularProgressIndicator()
                           : const SizedBox.shrink(),
                     ),

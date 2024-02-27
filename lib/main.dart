@@ -26,9 +26,9 @@ class _EagerInitialization extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // ref.watch(appModelNotificationProvider);
+    ref.watch(appStateNotificationProvider);
 
-    // ref.watch(appModelNotificationProvider.notifier).loadingUser();
+    ref.watch(appStateNotificationProvider.notifier).loadingUser();
     return child;
   }
 }
