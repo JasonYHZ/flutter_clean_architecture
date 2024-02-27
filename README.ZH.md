@@ -15,6 +15,7 @@
 - [x] 数据库： 应用程序使用 Drift 与本地 SQLite 数据库交互。
 - [x] 应用程序使用 freezed 和 json_annotation 库来简化序列化和反序列化 JSON 数据。
 - [x] 使用 shared_preferences 来存储用户首选项，如 选择的主题和语言。
+- [x] 使用 flutter_secure_storage 来存储用户令牌等敏感数据。
 - [ ] 支持使用 Websocket 进行实时通信。
 - [ ] 应用程序包括业务逻辑单元测试，确保应用程序按预期功能运行，应用程序按预期运行。
 
