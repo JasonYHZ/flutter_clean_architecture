@@ -18,7 +18,7 @@ extendable. It uses Riverpod for state management.
 - [x] Application uses freezed and json_annotation libraries to simplify serialising and deserialising JSON data.
 - [x] Uses shared_preferences to store user preferences such as selected themes and languages.
 - [x] Use flutter_secure_storage to store sensitive data such as user tokens.
-- [ ] Support for real-time communication using Websocket.
+- [x] Support for real-time communication using Websocket.
 - [ ] The application includes business logic unit tests to ensure that the application functions as
   expected and that the application works as expected.
 

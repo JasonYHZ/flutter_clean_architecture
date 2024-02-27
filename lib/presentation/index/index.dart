@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/presentation/providers.dart';
 import 'package:flutter_clean_architecture/presentation/utils/extension.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../app.dart';
@@ -13,6 +14,10 @@ class IndexView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final appStateNotification = ref.watch(appStateNotificationProvider);
+
+    final onMsg = ref.watch(websocketNotifierProvider).onMessage;
+
+    final msg = useState<String>("");
 
     return Scaffold(
       appBar: AppBar(
@@ -136,9 +141,38 @@ class IndexView extends HookConsumerWidget {
             FilledButton(
                 onPressed: () async {
                   ref.read(userUseCaseNotifierProvider).deleteUser();
-                  ref.watch(appStateNotificationProvider.notifier).setUser(null);
+                  ref
+                      .watch(appStateNotificationProvider.notifier)
+                      .setUser(null);
                 },
-                child: const Text('Logout'))
+                child: const Text('Logout')),
+          StreamBuilder<String>(
+              stream: onMsg,
+              builder: (context, snapshot) {
+                return ListTile(
+                  tileColor: Colors.blueGrey[100],
+                  leading: const Icon(Icons.mark_email_unread),
+                  title: const Text('receive msg:'),
+                  subtitle: Text(snapshot.data ?? 'No message'),
+                );
+              }),
+          const SizedBox(
+            height: 20,
+          ),
+          TextField(
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: "send message",
+            ),
+            onChanged: (value) {
+              msg.value = value;
+            },
+          ),
+          FilledButton(
+              onPressed: () {
+                ref.read(websocketNotifierProvider).send(msg.value);
+              },
+              child: const Text('send'))
         ],
       ),
     );

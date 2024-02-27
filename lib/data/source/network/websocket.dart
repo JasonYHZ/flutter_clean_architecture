@@ -42,7 +42,8 @@ class WebsocketImpl implements Websocket {
   @override
   void connect() {
     _channel = WebSocketChannel.connect(
-      Uri.parse('ws://192.168.2.135:8888'),
+      // Uri.parse('ws://192.168.2.135:8888'),
+      Uri.parse('ws://124.222.224.186:8800'),
     );
 
     _channel?.stream.listen(
@@ -58,11 +59,7 @@ class WebsocketImpl implements Websocket {
       cancelOnError: true,
     );
 
-
     _onConnectedController.add(null);
-
-
-
   }
 
 
