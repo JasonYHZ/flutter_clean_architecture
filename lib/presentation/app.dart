@@ -41,45 +41,32 @@ class AppState {
 @riverpod
 class AppStateNotification extends _$AppStateNotification {
   @override
-  Future<AppState> build() async {
+  AppState build() {
     return AppState(
       locale: ref.read(appUseCaseNotifierProvider).loadLocale(),
       themeMode: ref.read(appUseCaseNotifierProvider).loadTheme(),
       themeData: const CustomTheme(),
-      user: await ref.read(userRepositoryNotifierProvider).loadUser(),
+      user: null,
     );
   }
 
   void setThemeMode(ThemeMode themeMode) async {
     await ref.read(appUseCaseNotifierProvider).saveTheme(themeMode);
-
-    state.whenData(
-      (value) => state = AsyncValue.data(
-        value.copyWith(themeMode: themeMode),
-      ),
-    );
+    state = state.copyWith(themeMode: themeMode);
   }
 
   void setLocale(Locale locale) async {
     await ref.read(appUseCaseNotifierProvider).saveLocale(locale);
-    state.whenData(
-      (value) => state = AsyncValue.data(
-        value.copyWith(locale: locale),
-      ),
-    );
+    state = state.copyWith(locale: locale);
   }
 
   void setUser(User? user) {
+    state = state.copyWith(user: user);
+  }
 
-
-
-
-
-    state.whenData(
-      (value) => state = AsyncValue.data(
-        value.copyWith(user: user),
-      ),
-    );
+  void loadingUser() async {
+    final user = await ref.read(userRepositoryNotifierProvider).loadUser();
+    setUser(user);
   }
 }
 
@@ -90,31 +77,15 @@ class AppRoot extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final appStateNotification = ref.watch(appStateNotificationProvider);
 
-    return appStateNotification.when(
-      data: (data) => MaterialApp(
-        debugShowCheckedModeBanner: false,
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        supportedLocales: AppLocalizations.supportedLocales,
-        locale: data.locale,
-        themeMode: data.themeMode,
-        theme: data.themeData.toThemeData(),
-        darkTheme: data.themeData.toThemeDataDark(),
-        home: const IndexView(),
-      ),
-      error: (err, stack) => MaterialApp(
-        home: Scaffold(
-          body: Center(
-            child: Text('Error: $err'),
-          ),
-        ),
-      ),
-      loading: () => const MaterialApp(
-        home: Scaffold(
-          body: Center(
-            child: CircularProgressIndicator(),
-          ),
-        ),
-      ),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      locale: appStateNotification.locale,
+      themeMode: appStateNotification.themeMode,
+      theme: appStateNotification.themeData.toThemeData(),
+      darkTheme: appStateNotification.themeData.toThemeDataDark(),
+      home: const IndexView(),
     );
   }
 }

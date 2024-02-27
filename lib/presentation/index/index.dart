@@ -26,7 +26,7 @@ class IndexView extends HookConsumerWidget {
               shape: BoxShape.circle,
             ),
             child: InkWell(
-              onTap: appStateNotification.value?.user == null
+              onTap: appStateNotification.user == null
                   ? () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
@@ -41,11 +41,11 @@ class IndexView extends HookConsumerWidget {
               child: CircleAvatar(
                 backgroundColor: Colors.transparent,
                 radius: 15,
-                backgroundImage: appStateNotification.value!.user == null
+                backgroundImage: appStateNotification.user == null
                     ? null
                     : CachedNetworkImageProvider(
-                        appStateNotification.value!.user!.avatar),
-                child: appStateNotification.value!.user == null
+                        appStateNotification.user!.avatar),
+                child: appStateNotification.user == null
                     ? const Icon(
                         Icons.person,
                         color: Colors.white,
@@ -62,7 +62,7 @@ class IndexView extends HookConsumerWidget {
                 .read(appStateNotificationProvider.notifier)
                 .setThemeMode(value),
             child: Builder(builder: (_) {
-              switch (appStateNotification.value!.themeMode) {
+              switch (appStateNotification.themeMode) {
                 case ThemeMode.system:
                   return const Icon(Icons.brightness_auto);
                 case ThemeMode.light:
@@ -93,7 +93,7 @@ class IndexView extends HookConsumerWidget {
                 .read(appStateNotificationProvider.notifier)
                 .setLocale(value),
             child: Builder(builder: (_) {
-              switch (appStateNotification.value!.locale.languageCode) {
+              switch (appStateNotification.locale.languageCode) {
                 case 'zh':
                   return const Text('简体中文');
                 case 'en':
@@ -119,12 +119,12 @@ class IndexView extends HookConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          if (appStateNotification.value!.user != null)
+          if (appStateNotification.user != null)
             CircleAvatar(
               radius: 30,
               backgroundColor: Colors.blue,
               backgroundImage: CachedNetworkImageProvider(
-                  appStateNotification.value!.user!.avatar),
+                  appStateNotification.user!.avatar),
             ),
           Center(
             child: Text(
@@ -132,7 +132,7 @@ class IndexView extends HookConsumerWidget {
               style: Theme.of(context).textTheme.headlineLarge,
             ),
           ),
-          if (appStateNotification.value!.user != null)
+          if (appStateNotification.user != null)
             FilledButton(
                 onPressed: () async {
                   ref.read(userUseCaseNotifierProvider).deleteUser();
